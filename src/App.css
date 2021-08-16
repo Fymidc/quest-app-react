@@ -1,0 +1,42 @@
+.ui.main.container{
+  margin-top: 7em;
+}
+.extras a{
+  padding-left: 10px;
+}
+
+.sidebar-container{
+  text-align: center;
+}
+
+.discover-container{
+  text-align: center;
+}
+
+.discover{
+  width: 80%;
+  margin-bottom:15px !important; 
+  text-align: center;
+  
+  
+}
+
+
+/*timeline*/
+.timeline-card{
+  width: 85%;
+  align-items: center;
+  margin-left: 10% !important;
+}
+
+/*comment create*/
+
+.create-comment{
+  
+  text-align: center;
+  margin: 5px 10px;
+}
+
+.like-comment-sec{
+  text-align: start;
+}
