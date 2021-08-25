@@ -1,11 +1,17 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
 import { Container, Menu } from 'semantic-ui-react'
+
 import Signedin from './Signedin'
 import Signedout from './Signedout'
 
 function Nav() {
 
+     const state = useSelector(state => state.user)
+
+    
     const [isAuthenticated, setAuthenticated] = useState(true)
 
     let history = useHistory()
@@ -35,7 +41,7 @@ function Nav() {
 
                         <Menu.Item>
                             {
-                                isAuthenticated ? <Signedin signOut={handleSignOut} /> : <Signedout signIn={handleSignIn} />
+                                isAuthenticated ? <Signedin user={state.oneuser.userName} signOut={handleSignOut} /> : <Signedout signIn={handleSignIn} />
                             }
 
                         </Menu.Item>

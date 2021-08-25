@@ -29,6 +29,10 @@
   margin-left: 10% !important;
 }
 
+.card-user-info{
+  text-align: end;
+}
+
 /*comment create*/
 
 .create-comment{
@@ -40,3 +44,12 @@
 .like-comment-sec{
   text-align: start;
 }
+
+.comments-section{
+  margin-bottom: 2rem !important;
+}
+
+.comment-content{
+  text-align: left;
+}
+

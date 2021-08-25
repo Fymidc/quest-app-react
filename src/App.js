@@ -22,6 +22,11 @@ export default App;
 //create post section - created after redux it will connected to db
 //create routes ***
 // create comment and like 
-//create redux
+
+
+//create redux --***
+
+
+ 
 
 
