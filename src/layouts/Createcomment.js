@@ -1,38 +1,58 @@
 import { Form, Formik } from 'formik'
-import React from 'react'
+import React,{useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Comment, Dropdown } from 'semantic-ui-react'
+import { Button, Comment, Dropdown, Modal } from 'semantic-ui-react'
 import FthTextInput from '../services/FthTextInput'
-import { createComment ,deleteComment} from '../actions/commentActions'
+import { createComment ,deleteComment,editComment} from '../actions/commentActions'
 
 function Createcomment({ collapse, postId }) {
 
     const cstate = useSelector(state => state.comment)
     const ustate = useSelector(state => state.user)
+    const [open, setopen] = useState(false)
+    const [cid, setid] = useState("")
+    const [editc, seteditc] = useState("")
 
-    console.log("createcomment :", cstate.comments)
+  //console.log("createcomment :", cstate.comments.length)
     const dispatch = useDispatch();
 
 
-    console.log("post id: ", postId, "userId: ", ustate.oneuser.id)
+    //console.log("post id: ", postId, "userId: ", ustate.oneuser.id)
     const initialValues = {
         text: "",
         userId: ustate.oneuser.id,
         postId: postId
     }
 
+    const editValues = {
+        text: editc,
+    }
+
     const handleSubmit = (values) => {
-        console.log(values)
+       // console.log(values)
         dispatch(createComment(values))
         values.text = " "
     }
 
     const handleDelete=(id)=>{
-        console.log("delete id",id)
+       // console.log("delete id",id)
         dispatch(deleteComment(id))
     }
 
-    const handleEditPost=()=>{}
+    const handleEditpopup=(id,text)=>{
+        
+        setopen(true)
+        setid(id)
+        //console.log("popupdan gelen",id)
+        seteditc(text)
+        //console.log("gelen veri: ", text)
+    }
+
+    const handleEditComment=(value)=>{
+        dispatch(editComment(cid,value))
+        //console.log("edit value: ",value,"edit id: ", cid)
+        setopen(false)
+    }
 
     return (
 
@@ -54,7 +74,7 @@ function Createcomment({ collapse, postId }) {
                                         <Dropdown pointing="top left" icon="sort down" >
                                             <Dropdown.Menu>
                                                 <Dropdown.Item onClick={() => handleDelete(comment.id)} text="delete" icon="delete" />
-                                                <Dropdown.Item onClick={() => handleEditPost(comment)} text="edit" icon="edit" />
+                                                <Dropdown.Item onClick={() => handleEditpopup(comment.id,comment.text)} text="edit" icon="edit" />
                                             </Dropdown.Menu>
                                         </Dropdown>
                                     </Comment.Metadata>
@@ -85,6 +105,35 @@ function Createcomment({ collapse, postId }) {
                 </Comment.Group>
 
             </Comment>
+
+
+            
+        <Modal
+                size='tiny'
+                open={open}
+
+            >
+                <Modal.Content>
+                   
+                <Formik
+                        initialValues={editValues}
+                        onSubmit={(values) => {
+                            handleEditComment(values)
+                        }}
+
+                    >
+                        <Form style={{ display: 'flex' }} className="ui form" >
+                            <FthTextInput name="text" placeholder="Reply.." />
+
+                            <Button style={{ margin: '2px', height: '35px' }} color="green" type="submit" > Edit </Button>
+                            <Button style={{ margin: '2px', height: '35px' }} color="red" onClick={()=>setopen(false)} > Cancel </Button>
+                        </Form>
+
+                    </Formik>
+
+                </Modal.Content>
+                
+            </Modal>
 
 
 

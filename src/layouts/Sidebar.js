@@ -14,7 +14,7 @@ function Sidebar() {
     const poststate = useSelector(state => state.post)
     const {id} = state.oneuser
 
-    console.log(id)
+    //console.log(id)
     //console.log("postun id",poststate.posts)
 
    

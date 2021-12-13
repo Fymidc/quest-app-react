@@ -4,6 +4,7 @@ import { Button, Card, Image,Menu,Dropdown, Modal, Divider} from 'semantic-ui-re
 import Createcomment from '../layouts/Createcomment'
 import {getAllPost,deletePost,editPost} from '../actions/postActions'
 import {getAllComment} from '../actions/commentActions'
+import {getAllLike,createLike,deleteLike} from '../actions/likeActions'
 import { Formik,Form } from 'formik'
 import FthTextInput from '../services/FthTextInput'
 import * as Yup from 'yup'
@@ -13,10 +14,14 @@ function Timeline() {
 
     const state = useSelector(state => state.post)
     const cstate = useSelector(state => state.comment)
+    const lstate = useSelector(state => state.like)
+
+    
 
     const [open, setopen] = useState(false)
     const [edited, setedited] = useState("")
     const [collapsed, setcollapsed] = useState(true)
+    const [isLiked, setisLiked] = useState(false)
 
     const handleCheckbox = (e) =>{
         
@@ -24,13 +29,14 @@ function Timeline() {
       }
 
 
-    console.log(cstate.comments)
+   console.log(" likes",lstate.likes.length)
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getAllPost());
         dispatch(getAllComment());
-    }, [])
+        dispatch(getAllLike());
+    },[])
 
     const handleEditPost = (data) => {
         setopen(true)
@@ -51,6 +57,24 @@ function Timeline() {
         //console.log(id,values)
 
         setopen(false);
+    }
+    const deleteHandle=(liked,data)=>{
+        const [id] = lstate.likes.slice(-1)
+       // console.log("likes from redux",id.id)
+        if(liked){
+            dispatch(deleteLike(id.id))
+           // console.log("like silindi")
+        }else{
+            dispatch(createLike(data))
+            //console.log("like eklendi",data)
+        }
+    }
+
+    const handleLike=(data)=>{
+        setisLiked(!isLiked)
+        
+        deleteHandle(isLiked,data)
+        
     }
 
     const initialValues = {
@@ -95,7 +119,9 @@ function Timeline() {
                     <div className="like-comment-sec" >
                         <Button size="mini"
                             icon='heart'
-                            label={{content: '2,048' }}
+                            color={isLiked?"red":"grey"}
+                            label={{content:lstate.likes.length }}
+                            onClick={()=>handleLike(data)}
                         />
                         <Button size="mini" onClick={handleCheckbox}
                             
@@ -104,7 +130,7 @@ function Timeline() {
                             label={{
                                 as: 'a',
                                 
-                                content: '2,048',
+                                content: cstate.comments.length,
                                 
                             }}
                         />
